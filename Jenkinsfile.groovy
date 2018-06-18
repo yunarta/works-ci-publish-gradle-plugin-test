@@ -160,10 +160,10 @@ pipeline {
 
 def updateVersion() {
     bintrayDownloadMatches repository: "mobilesolutionworks/snapshot",
-            packageInfo: readYaml(file: 'plugin/module.yaml'),
+            packageInfo: readYaml(file: 'library/module.yaml'),
             credential: "mobilesolutionworks.jfrog.org"
 
-    def properties = readYaml(file: 'plugin/module.yaml')
+    def properties = readYaml(file: 'library/module.yaml')
     def incremented = versionIncrementQualifier()
     if (incremented != null) {
         properties.version = incremented
@@ -171,19 +171,19 @@ def updateVersion() {
         properties.version = properties.version + "-BUILD-1"
     }
 
-    sh "rm plugin/module.yaml"
-    writeYaml file: 'plugin/module.yaml', data: properties
+    sh "rm library/module.yaml"
+    writeYaml file: 'library/module.yaml', data: properties
 }
 
 def compareArtifact(String repo, String job) {
     bintrayDownloadMatches repository: "mobilesolutionworks/${repo}",
-            packageInfo: readYaml(file: 'plugin/module.yaml'),
+            packageInfo: readYaml(file: 'library/module.yaml'),
             credential: "mobilesolutionworks.jfrog.org"
 
     def same = bintrayCompare repository: "mobilesolutionworks/${repo}",
-            packageInfo: readYaml(file: 'plugin/module.yaml'),
+            packageInfo: readYaml(file: 'library/module.yaml'),
             credential: "mobilesolutionworks.jfrog.org",
-            path: "plugin/build/libs"
+            path: "library/build/libs"
 
     if (fileExists(".jenkins/notify")) {
         sh "rm .jenkins/notify"
@@ -203,8 +203,8 @@ def doPublish() {
 def publish(String repo) {
     bintrayPublish([
             credential: "mobilesolutionworks.jfrog.org",
-            pkg       : readYaml(file: 'plugin/module.yaml'),
+            pkg       : readYaml(file: 'library/module.yaml'),
             repo      : "mobilesolutionworks/${repo}",
-            src       : "plugin/build/libs"
+            src       : "library/build/libs"
     ])
 }

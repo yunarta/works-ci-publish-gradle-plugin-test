@@ -7,7 +7,7 @@ buildscript {
         google()
         mavenCentral()
         maven {
-            url = java.net.URI("https://dl.bintray.com/mobilesolutionworks/snapshot")
+            url = java.net.URI("https://dl.bintray.com/mobilesolutionworks/release")
         }
     }
 
